@@ -10,6 +10,8 @@ function App({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <Head>
         <title>Tweeter</title>
+        <link rel='shortcut icon' href='/img/favicon.png' type='image/x-icon' />
+        <link rel='apple-touch-icon' href='/img/apple-touch-icon.png' />
         <link rel='manifest' href='/manifest.json' />
         <meta
           name='description'
