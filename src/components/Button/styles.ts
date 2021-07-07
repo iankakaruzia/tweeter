@@ -68,18 +68,25 @@ const wrapperModifiers = {
 export const Button = styled.button<WrapperProps>`
   ${({ theme, outlined, fullWidth, color, disabled }) => css`
     height: 3.8rem;
-    font-size: ${theme.font.sizes.xsmall};
     padding: ${theme.spacings.xxsmall} ${theme.spacings.medium};
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    font-family: ${theme.font.family};
     border: 0;
     cursor: pointer;
-    border-radius: 1.2rem;
+    border-radius: 0.8rem;
     text-decoration: none;
+
+    span {
+      font-family: ${theme.font.family};
+      font-size: ${theme.font.sizes.xsmall};
+      font-weight: ${theme.font.semibold};
+      text-align: center;
+      line-height: 2.2rem;
+      letter-spacing: -0.035em;
+    }
 
     transition: all 0.2s;
 

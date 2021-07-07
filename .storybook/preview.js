@@ -1,3 +1,4 @@
+import '../.jest/next-image.mock'
 import { addDecorator } from '@storybook/react'
 import { ThemeProvider } from 'styled-components'
 import { withNextRouter } from 'storybook-addon-next-router'
