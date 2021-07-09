@@ -49,6 +49,10 @@ describe('<AuthForm />', () => {
         color: #8db9f5;
       }
 
+      .c1 a:hover {
+        color: #a4c8f7;
+      }
+
       <body>
         <div>
           <div

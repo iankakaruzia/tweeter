@@ -40,4 +40,12 @@ describe('<LoginForm />', () => {
     expect(screen.getByRole('link', { name: /register/i })).toBeInTheDocument()
     expect(screen.getByText(/don't have an account yet\?/i)).toBeInTheDocument()
   })
+
+  it('should render text to reset password if forgot the password', () => {
+    render(<LoginForm />)
+
+    expect(
+      screen.getByRole('link', { name: /Forgot your password\?/i })
+    ).toBeInTheDocument()
+  })
 })

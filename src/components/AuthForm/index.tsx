@@ -56,6 +56,10 @@ export const FormLink = styled.div`
 
     a {
       color: ${lighten(0.2, theme.colors.primary)};
+
+      &:hover {
+        color: ${lighten(0.25, theme.colors.primary)};
+      }
     }
   `}
 `
