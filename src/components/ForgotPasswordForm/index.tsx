@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Email } from '@styled-icons/material-rounded'
 
 import { FormLink, FormWrapper } from 'components/AuthForm'
 import TextField from 'components/TextField'
@@ -8,7 +9,7 @@ const ForgotPasswordForm = () => {
   return (
     <FormWrapper>
       <form>
-        <TextField placeholder='Email' type='email' />
+        <TextField placeholder='Email' type='email' icon={<Email />} />
 
         <Button>Send Email</Button>
 

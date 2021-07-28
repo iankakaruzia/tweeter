@@ -32,7 +32,9 @@ export default {
     btnText: '#FFFFFF',
     lightGray: '#EAEAEA',
     gray: '#BDBDBD',
-    darkGray: '#828282'
+    darkGray: '#828282',
+    border: '#e0e0e0',
+    headerBg: '#f2f2f2'
   },
   spacings: {
     xxsmall: '0.8rem',

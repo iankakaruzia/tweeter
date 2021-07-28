@@ -1,5 +1,5 @@
 import ResetPasswordForm from 'components/ResetPasswordForm'
-import Auth from 'templates/auth'
+import Auth from 'templates/Auth'
 
 export default function ResetPassword() {
   return (

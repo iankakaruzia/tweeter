@@ -1,5 +1,5 @@
 import RegisterForm from 'components/RegisterForm'
-import Auth from 'templates/auth'
+import Auth from 'templates/Auth'
 
 export default function Register() {
   return (

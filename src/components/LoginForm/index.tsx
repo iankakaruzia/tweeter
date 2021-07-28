@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Email, Https } from '@styled-icons/material-rounded'
 
 import TextField from 'components/TextField'
 import Button from 'components/Button'
@@ -11,8 +12,8 @@ const LoginForm = () => {
   return (
     <FormWrapper>
       <form>
-        <TextField placeholder='Email' type='email' />
-        <TextField placeholder='Password' type='password' />
+        <TextField placeholder='Email' type='email' icon={<Email />} />
+        <TextField placeholder='Password' type='password' icon={<Https />} />
 
         <Link href='/forgot-password' passHref>
           <S.ForgotPassword>Forgot your password?</S.ForgotPassword>
