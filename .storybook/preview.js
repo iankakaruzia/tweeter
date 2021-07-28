@@ -1,11 +1,8 @@
 import '../.jest/next-image.mock'
-import { addDecorator } from '@storybook/react'
 import { ThemeProvider } from 'styled-components'
-import { withNextRouter } from 'storybook-addon-next-router'
+import { RouterContext } from 'next/dist/next-server/lib/router-context'
 import GlobalStyles from 'styles/global'
 import theme from 'styles/theme'
-
-addDecorator(withNextRouter())
 
 export const decorators = [
   (Story) => (
@@ -15,3 +12,9 @@ export const decorators = [
     </ThemeProvider>
   )
 ]
+
+export const parameters = {
+  nextRouter: {
+    Provider: RouterContext.Provider,
+  },
+}
