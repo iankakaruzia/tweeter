@@ -1,8 +1,15 @@
 import styled, { css, DefaultTheme } from 'styled-components'
 
-import { TextFieldProps } from '.'
+import { TextFieldProps, TextInputVariant } from '.'
 
-type WrapperProps = Pick<TextFieldProps, 'disabled'> & { error?: boolean }
+type WrapperProps = Pick<TextFieldProps, 'disabled' | 'fullWidth'> & {
+  error?: boolean
+}
+
+type InputProps = {
+  variant: TextInputVariant
+  hasIcon: boolean
+}
 
 export const InputWrapper = styled.div`
   ${({ theme }) => css`
@@ -19,25 +26,52 @@ export const InputWrapper = styled.div`
   `}
 `
 
-export const Input = styled.input`
-  ${({ theme }) => css`
+const inputModifiers = {
+  primary: (theme: DefaultTheme) => css`
+    padding: ${theme.spacings.xxsmall} 0;
+
     color: ${theme.colors.text};
-    font-family: ${theme.font.family};
     font-size: ${theme.font.sizes.xsmall};
     line-height: 2.2rem;
-    letter-spacing: -0.035em;
-    padding: ${theme.spacings.xxsmall} 0;
+    font-weight: ${theme.font.normal};
+  `,
+  secondary: (theme: DefaultTheme) => css`
+    padding: ${theme.spacings.xsmall} 0;
+
+    font-weight: ${theme.font.medium};
+    font-size: ${theme.font.sizes.xxsmall};
+    line-height: 1.8rem;
+    color: ${theme.colors.text};
+  `,
+  hasIcon: (theme: DefaultTheme) => css`
     padding-left: ${theme.spacings.xsmall};
+  `
+}
+
+export const Input = styled.input<InputProps>`
+  ${({ theme, variant, hasIcon }) => css`
+    font-family: ${theme.font.family};
+    letter-spacing: -0.035em;
     background: transparent;
     border: 0;
     outline: none;
     width: 100%;
+
+    resize: vertical;
 
     &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 ${theme.spacings.small}
         ${theme.colors.lightGray} inset;
       filter: none;
     }
+
+    ::placeholder {
+      color: ${theme.colors.gray};
+      opacity: 1;
+    }
+
+    ${variant && inputModifiers[variant](theme)};
+    ${hasIcon && inputModifiers.hasIcon(theme)};
   `}
 `
 
@@ -94,12 +128,16 @@ const wrapperModifiers = {
         color: currentColor;
       }
     }
+  `,
+  fullWidth: () => css`
+    width: 100%;
   `
 }
 
 export const Wrapper = styled.div<WrapperProps>`
-  ${({ theme, error, disabled }) => css`
+  ${({ theme, error, disabled, fullWidth }) => css`
     ${error && wrapperModifiers.error(theme)}
     ${disabled && wrapperModifiers.disabled(theme)}
+    ${fullWidth && wrapperModifiers.fullWidth()}
   `}
 `

@@ -18,8 +18,8 @@ const props: ProfileProps = {
   photoUrl: 'image.png'
 }
 
-describe('<Base />', () => {
-  it('should render menu and children', () => {
+describe('<Profile />', () => {
+  it('should render Profile Viewer', () => {
     render(<Profile {...props} />)
 
     expect(screen.getByTestId('Mock Profile Viewer')).toBeInTheDocument()

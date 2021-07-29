@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { Email } from '@styled-icons/material-rounded'
 import { screen, waitFor, render } from 'utils/test-util'
 
+import theme from 'styles/theme'
 import TextField from '.'
 
 describe('<TextField />', () => {
@@ -9,6 +10,41 @@ describe('<TextField />', () => {
     render(<TextField label='Label' name='Label' />)
 
     expect(screen.getByLabelText('Label')).toBeInTheDocument()
+  })
+
+  it('should render a secondary TextField', () => {
+    render(<TextField placeholder='Input' variant='secondary' />)
+
+    expect(screen.getByPlaceholderText('Input')).toHaveStyle({
+      'font-size': theme.font.sizes.xxsmall
+    })
+  })
+
+  it('should render a fullWidth TextField', () => {
+    render(<TextField fullWidth placeholder='Input' variant='secondary' />)
+
+    expect(
+      screen.getByPlaceholderText('Input').parentElement?.parentElement
+    ).toHaveStyle({
+      width: '100%'
+    })
+  })
+
+  it('should render TextField as a textarea', () => {
+    render(
+      <TextField
+        label='Label'
+        name='Label'
+        as='textarea'
+        variant='secondary'
+        rows={4}
+      />
+    )
+
+    expect(screen.getByRole('textbox', { name: 'Label' })).toHaveAttribute(
+      'rows',
+      '4'
+    )
   })
 
   it('should render a TextField without Label', () => {

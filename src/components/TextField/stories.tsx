@@ -11,11 +11,18 @@ export default {
     name: 'email',
     icon: <Email />,
     initialValue: '',
-    placeholder: 'john.cage@gmail.com'
+    placeholder: 'john.cage@gmail.com',
+    variant: 'primary'
   },
   argTypes: {
     onInput: { action: 'changed' },
-    icon: { type: '' }
+    icon: { type: '' },
+    variant: {
+      control: {
+        type: 'select',
+        options: ['primary', 'secondary']
+      }
+    }
   }
 } as Meta
 
@@ -24,6 +31,18 @@ export const Default: Story<TextFieldProps> = (args) => (
     <TextField {...args} />
   </div>
 )
+
+export const Secondary: Story<TextFieldProps> = (args) => (
+  <div style={{ maxWidth: 300, padding: 15 }}>
+    <TextField {...args} />
+  </div>
+)
+
+Secondary.args = {
+  variant: 'secondary',
+  icon: undefined,
+  label: 'Email'
+}
 
 export const withError: Story<TextFieldProps> = (args) => (
   <div style={{ maxWidth: 300, padding: 15 }}>

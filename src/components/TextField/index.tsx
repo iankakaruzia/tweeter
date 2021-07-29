@@ -1,6 +1,12 @@
-import { useState, InputHTMLAttributes } from 'react'
+import { useState, InputHTMLAttributes, TextareaHTMLAttributes } from 'react'
 
 import * as S from './styles'
+
+export type TextInputVariant = 'primary' | 'secondary'
+
+export type TextInputTypes =
+  | InputHTMLAttributes<HTMLInputElement>
+  | TextareaHTMLAttributes<HTMLTextAreaElement>
 
 export type TextFieldProps = {
   onInputChange?: (value: string) => void
@@ -9,7 +15,10 @@ export type TextFieldProps = {
   icon?: React.ReactNode
   disabled?: boolean
   error?: string
-} & InputHTMLAttributes<HTMLInputElement>
+  variant?: TextInputVariant
+  as?: React.ElementType
+  fullWidth?: boolean
+} & TextInputTypes
 
 const TextInput = ({
   icon,
@@ -19,6 +28,8 @@ const TextInput = ({
   error,
   disabled = false,
   onInputChange,
+  variant = 'primary',
+  fullWidth = false,
   ...props
 }: TextFieldProps) => {
   const [value, setValue] = useState(initialValue)
@@ -31,7 +42,7 @@ const TextInput = ({
   }
 
   return (
-    <S.Wrapper disabled={disabled} error={!!error}>
+    <S.Wrapper fullWidth={fullWidth} disabled={disabled} error={!!error}>
       {!!label && <S.Label htmlFor={name}>{label}</S.Label>}
       <S.InputWrapper>
         {!!icon && <S.Icon>{icon}</S.Icon>}
@@ -41,6 +52,8 @@ const TextInput = ({
           value={value}
           disabled={disabled}
           name={name}
+          variant={variant}
+          hasIcon={!!icon}
           {...(label ? { id: name } : {})}
           {...props}
         />
