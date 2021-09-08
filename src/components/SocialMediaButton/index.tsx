@@ -27,7 +27,11 @@ const SocialMediaButton = ({
   const socialMediaIcon = getSocialMediaIcon()
 
   return (
-    <S.Button {...rest} aria-label={`Login with ${socialMediaIcon}`}>
+    <S.Button
+      type='button'
+      {...rest}
+      aria-label={`Login with ${socialMediaIcon}`}
+    >
       <Image
         src={`/img/${socialMediaIcon}.svg`}
         alt={socialMediaIcon}

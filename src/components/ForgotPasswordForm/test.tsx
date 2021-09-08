@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event'
 import { render, screen } from 'utils/test-util'
 
 import ForgotPasswordForm from '.'
@@ -28,5 +29,17 @@ describe('<ForgotPasswordForm />', () => {
 
     expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
     expect(screen.getByText(/already a member\?/i)).toBeInTheDocument()
+  })
+
+  it('should show error message when typing invalid email', async () => {
+    render(<ForgotPasswordForm />)
+
+    await userEvent.type(screen.getByPlaceholderText(/email/i), 'invalid')
+
+    userEvent.click(screen.getByRole('button', { name: /send email/i }))
+
+    expect(
+      await screen.findByText(/"email" must be a valid email/i)
+    ).toBeInTheDocument()
   })
 })

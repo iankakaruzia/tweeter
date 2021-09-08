@@ -1,10 +1,12 @@
 import LoginForm from 'components/LoginForm'
 import Auth from 'templates/Auth'
 
-export default function Login() {
+function Login() {
   return (
     <Auth title='Login'>
       <LoginForm />
     </Auth>
   )
 }
+
+export default Login

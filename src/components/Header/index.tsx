@@ -16,6 +16,7 @@ import Logo from 'components/Logo'
 import useDetectOutsideClick from 'hooks/use-detect-outside-click'
 
 import * as S from './styles'
+import { useAuth } from 'hooks/use-auth'
 
 export type HeaderProps = {
   user: {
@@ -25,6 +26,7 @@ export type HeaderProps = {
 }
 
 const Header = ({ user }: HeaderProps) => {
+  const { logout } = useAuth()
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
 
@@ -75,7 +77,7 @@ const Header = ({ user }: HeaderProps) => {
           <People size={16} /> Group Chat
         </S.DropdownOption>
         <S.DropdownSeparator />
-        <S.DropdownLogoutOption>
+        <S.DropdownLogoutOption onClick={logout}>
           <ExitToApp color='#EB5757' size={16} /> Logout
         </S.DropdownLogoutOption>
       </S.Dropdown>

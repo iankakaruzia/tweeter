@@ -1,7 +1,7 @@
 import RegisterForm from 'components/RegisterForm'
 import Auth from 'templates/Auth'
 
-export default function Register() {
+function Register() {
   return (
     <Auth
       title='Join thousands of learners from around the world'
@@ -11,3 +11,5 @@ export default function Register() {
     </Auth>
   )
 }
+
+export default Register

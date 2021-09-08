@@ -63,3 +63,29 @@ export const FormLink = styled.div`
     }
   `}
 `
+
+export const FormError = styled.div`
+  ${({ theme }) => css`
+    color: red;
+    font-size: ${theme.font.sizes.xxxsmall};
+    display: flex;
+
+    svg {
+      width: 1.6rem;
+      margin-right: 0.4rem;
+    }
+  `}
+`
+
+export const FormSuccess = styled.div`
+  ${({ theme }) => css`
+    display: flex;
+    flex-direction: column;
+
+    > span {
+      color: ${theme.colors.primary};
+      font-size: ${theme.font.sizes.xsmall};
+      margin-bottom: ${theme.spacings.xsmall};
+    }
+  `}
+`
