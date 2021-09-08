@@ -34,20 +34,20 @@ const Header = ({ user }: HeaderProps) => {
 
   return (
     <S.Header>
-      <Link href='/'>
+      <Link href='/home'>
         <a>
           <Logo hideOnMobile />
         </a>
       </Link>
 
       <S.TopNavigation>
-        <Link href='/' passHref>
+        <Link href='/home' passHref>
           <S.TopNavigationLink isActive>Home</S.TopNavigationLink>
         </Link>
-        <Link href='/' passHref>
+        <Link href='/home' passHref>
           <S.TopNavigationLink>Explore</S.TopNavigationLink>
         </Link>
-        <Link href='/' passHref>
+        <Link href='/home' passHref>
           <S.TopNavigationLink>Bookmarks</S.TopNavigationLink>
         </Link>
       </S.TopNavigation>

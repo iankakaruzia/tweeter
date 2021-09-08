@@ -76,7 +76,7 @@ const AuthProvider = ({ children, authenticated }: AuthProviderProps) => {
 
       setUser(data)
       setIsAuthenticated(true)
-      return push(`${window.location.origin}${query?.callbackUrl || ''}`)
+      return push(`${window.location.origin}${query?.callbackUrl || '/home'}`)
     } catch (error) {
       clearAuthInfo()
     }

@@ -1,24 +1,5 @@
-import { GetServerSidePropsContext } from 'next'
-import protectedRoutes from 'utils/protected-routes'
+import IndexTemplate from 'templates/Index'
 
-export default function Home() {
-  return (
-    <div>
-      <h1>Tweeter</h1>
-    </div>
-  )
-}
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isAuthenticated = await protectedRoutes(context)
-
-  if (!isAuthenticated) {
-    return {
-      props: {}
-    }
-  }
-
-  return {
-    props: {}
-  }
+export default function Index() {
+  return <IndexTemplate />
 }
