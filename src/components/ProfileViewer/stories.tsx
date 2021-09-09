@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import ProfileViewer, { ProfileViewerProps } from '.'
+import ProfileViewer from '.'
 
 export default {
   title: 'ProfileViewer',
@@ -15,13 +15,4 @@ export default {
   }
 } as Meta
 
-export const Default: Story<ProfileViewerProps> = (args) => (
-  <ProfileViewer {...args} />
-)
-
-Default.args = {
-  photoUrl: 'https://github.com/iankakaruzia.png',
-  name: 'Ianka Karúzia',
-  bio: 'I am a software developer and a big fan of devchallenges...',
-  email: 'ianka@email.com'
-}
+export const Default: Story = () => <ProfileViewer />

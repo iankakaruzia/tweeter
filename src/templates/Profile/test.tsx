@@ -1,6 +1,6 @@
 import { render, screen } from 'utils/test-util'
 
-import Profile, { ProfileProps } from '.'
+import Profile from '.'
 
 jest.mock('components/ProfileViewer', () => {
   return {
@@ -11,16 +11,9 @@ jest.mock('components/ProfileViewer', () => {
   }
 })
 
-const props: ProfileProps = {
-  bio: 'some bio',
-  name: 'John Doe',
-  email: 'johndoe@email.com',
-  photoUrl: 'image.png'
-}
-
 describe('<Profile />', () => {
   it('should render Profile Viewer', () => {
-    render(<Profile {...props} />)
+    render(<Profile />)
 
     expect(screen.getByTestId('Mock Profile Viewer')).toBeInTheDocument()
   })

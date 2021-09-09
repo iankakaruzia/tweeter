@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0'
 
-import Header, { HeaderProps } from '.'
+import Header from '.'
 
 export default {
   title: 'Header',
@@ -13,11 +13,4 @@ export default {
   }
 } as Meta
 
-export const Default: Story<HeaderProps> = (args) => <Header {...args} />
-
-Default.args = {
-  user: {
-    photoUrl: 'https://github.com/iankakaruzia.png',
-    name: 'Ianka Karúzia'
-  }
-}
+export const Default: Story = () => <Header />
