@@ -7,13 +7,9 @@ export type BaseProps = {
 }
 
 const Base = ({ children }: BaseProps) => {
-  const user = {
-    photoUrl: 'https://github.com/iankakaruzia.png',
-    name: 'Ianka Karúzia'
-  }
   return (
     <S.Wrapper>
-      <Header user={user} />
+      <Header />
       <S.Content>{children}</S.Content>
     </S.Wrapper>
   )

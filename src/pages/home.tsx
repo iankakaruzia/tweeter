@@ -1,12 +1,9 @@
 import { GetServerSidePropsContext } from 'next'
 import protectedRoutes from 'utils/protected-routes'
+import HomeTemplate from 'templates/Home'
 
 export default function Home() {
-  return (
-    <div>
-      <h1>Tweeter</h1>
-    </div>
-  )
+  return <HomeTemplate />
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

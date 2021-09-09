@@ -52,15 +52,6 @@ const ProfileEditor = () => {
             />
           </S.Section>
 
-          <S.Section>
-            <TextField
-              fullWidth
-              label='Email'
-              placeholder='Enter your email...'
-              type='email'
-            />
-          </S.Section>
-
           <Button>Save</Button>
         </form>
       </S.Content>

@@ -92,7 +92,7 @@ export const DropdownSeparator = styled.div`
   `}
 `
 
-export const DropdownOption = styled.button`
+export const DropdownOption = styled.a`
   ${({ theme }) => css`
     background: transparent;
     cursor: pointer;
@@ -108,6 +108,7 @@ export const DropdownOption = styled.button`
     letter-spacing: -0.035em;
     font-weight: ${theme.font.medium};
     color: ${theme.colors.lightText};
+    text-decoration: none;
     transition: background 0.2s;
 
     svg {

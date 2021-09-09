@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import nookies from 'nookies'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Hydrate } from 'react-query/hydration'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -59,6 +60,7 @@ const MyApp = ({ authenticated, pageProps, Component }: AppProps) => {
               pauseOnHover
             />
             <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </AuthProvider>
         </ThemeProvider>
       </Hydrate>

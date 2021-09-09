@@ -3,17 +3,10 @@ import Base from 'templates/Base'
 
 import * as S from './styles'
 
-export type ProfileProps = {
-  photoUrl: string
-  name: string
-  bio: string
-  email: string
-}
-
-const Profile = ({ name, bio, email, photoUrl }: ProfileProps) => {
+const Profile = () => {
   return (
     <Base>
-      <ProfileViewer {...{ name, bio, email, photoUrl }} />
+      <ProfileViewer />
       <S.Footer>
         <S.Text>
           created by <span>Ianka Karúzia</span>

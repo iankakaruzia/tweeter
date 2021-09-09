@@ -18,15 +18,8 @@ import useDetectOutsideClick from 'hooks/use-detect-outside-click'
 import * as S from './styles'
 import { useAuth } from 'hooks/use-auth'
 
-export type HeaderProps = {
-  user: {
-    photoUrl: string
-    name: string
-  }
-}
-
-const Header = ({ user }: HeaderProps) => {
-  const { logout } = useAuth()
+const Header = () => {
+  const { logout, user } = useAuth()
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
 
@@ -52,17 +45,26 @@ const Header = ({ user }: HeaderProps) => {
         </Link>
       </S.TopNavigation>
 
-      <S.DropdownButton onClick={onClick}>
-        <S.ImageWrapper>
-          <Image src={user.photoUrl} alt={user.name} width='32' height='32' />
-        </S.ImageWrapper>
-        <S.Username>{user.name}</S.Username>
-        {isActive ? (
-          <ArrowDropUp aria-label='Close Menu' size={25} />
-        ) : (
-          <ArrowDropDown size={25} aria-label='Open Menu' />
-        )}
-      </S.DropdownButton>
+      {user ? (
+        <S.DropdownButton onClick={onClick}>
+          <S.ImageWrapper>
+            <Image
+              src={user.profilePhoto ?? '/img/default-avatar.jpg'}
+              alt={user.username}
+              width='32'
+              height='32'
+            />
+          </S.ImageWrapper>
+          <S.Username>{user.username}</S.Username>
+          {isActive ? (
+            <ArrowDropUp aria-label='Close Menu' size={25} />
+          ) : (
+            <ArrowDropDown size={25} aria-label='Open Menu' />
+          )}
+        </S.DropdownButton>
+      ) : (
+        <div />
+      )}
 
       <S.Dropdown
         role='menu'
@@ -70,9 +72,11 @@ const Header = ({ user }: HeaderProps) => {
         ref={dropdownRef}
         isActive={isActive}
       >
-        <S.DropdownOption>
-          <AccountCircle size={16} /> My Profile
-        </S.DropdownOption>
+        <Link href='/profile' passHref>
+          <S.DropdownOption>
+            <AccountCircle size={16} /> My Profile
+          </S.DropdownOption>
+        </Link>
         <S.DropdownOption>
           <People size={16} /> Group Chat
         </S.DropdownOption>

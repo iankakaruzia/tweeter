@@ -1,16 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useQuery } from 'react-query'
 
+import { meRequest, ProfileInfo } from 'services/user'
 import * as S from './styles'
 
-export type ProfileViewerProps = {
-  photoUrl: string
-  name: string
-  bio: string
-  email: string
-}
-
-const ProfileViewer = ({ photoUrl, name, bio, email }: ProfileViewerProps) => {
+const ProfileViewer = () => {
+  const { data } = useQuery<ProfileInfo>('user', meRequest)
   return (
     <S.Wrapper>
       <S.Title>Personal info</S.Title>
@@ -30,20 +26,25 @@ const ProfileViewer = ({ photoUrl, name, bio, email }: ProfileViewerProps) => {
         <S.Section>
           <S.Label>Photo</S.Label>
           <S.ImageWrapper>
-            <Image src={photoUrl} width='72' height='72' alt={name} />
+            <Image
+              src={data?.profilePhoto ?? '/img/default-avatar.jpg'}
+              width='72'
+              height='72'
+              alt={data?.username}
+            />
           </S.ImageWrapper>
         </S.Section>
         <S.Section>
           <S.Label>Name</S.Label>
-          <S.Text>{name}</S.Text>
+          <S.Text>{data?.name ?? '-'}</S.Text>
         </S.Section>
         <S.Section>
           <S.Label>Bio</S.Label>
-          <S.Text>{bio}</S.Text>
+          <S.Text>{data?.bio ?? '-'}</S.Text>
         </S.Section>
         <S.Section>
           <S.Label>Email</S.Label>
-          <S.Text>{email}</S.Text>
+          <S.Text>{data?.email ?? '-'}</S.Text>
         </S.Section>
         <S.Section>
           <S.Label>Password</S.Label>
