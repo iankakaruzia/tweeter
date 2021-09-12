@@ -154,7 +154,7 @@ export const ImageWrapper = styled.div`
   }
 `
 
-export const UpdatePassword = styled.button`
+export const UpdateButton = styled.button`
   ${({ theme }) => css`
     color: ${theme.colors.darkGray};
     font-weight: ${theme.font.medium};

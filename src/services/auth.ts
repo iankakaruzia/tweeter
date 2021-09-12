@@ -27,6 +27,17 @@ export const validateRequest = async <T>() => {
   return data
 }
 
+export const validateRequestCookie = async (
+  authenticationCookie: string
+): Promise<boolean> => {
+  const { data } = await api.get<{ valid: boolean }>('validate-cookie', {
+    headers: {
+      Cookie: `Authentication=${authenticationCookie}`
+    }
+  })
+  return data.valid
+}
+
 export const logoutRequest = async () => {
   await api.post('logout', {}, { withCredentials: true })
 }

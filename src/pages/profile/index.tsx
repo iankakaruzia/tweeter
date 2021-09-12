@@ -9,16 +9,16 @@ export default function Profile() {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isAuthenticated = await protectedRoutes(context)
+  const authenticationCookie = await protectedRoutes(context)
 
-  if (!isAuthenticated) {
+  if (!authenticationCookie) {
     return {
       props: {}
     }
   }
 
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery('user', meRequest)
+  await queryClient.prefetchQuery('user', () => meRequest(authenticationCookie))
 
   return {
     props: {

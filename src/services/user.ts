@@ -13,9 +13,14 @@ export type ProfileInfo = {
   birthday: string | null
 }
 
-export const meRequest = async () => {
+export const meRequest = async (authentication?: string) => {
+  const isBrowser = typeof window !== 'undefined'
+  const Cookie = `Authentication=${authentication}`
   const { data } = await api.get<ProfileInfo>('users/me', {
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+      ...(isBrowser ? {} : { Cookie })
+    }
   })
   return data
 }

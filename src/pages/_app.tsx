@@ -20,7 +20,16 @@ type AppProps = {
 } & Props
 
 const MyApp = ({ authenticated, pageProps, Component }: AppProps) => {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 20 * 1000 // 20 seconds
+          }
+        }
+      })
+  )
 
   return (
     <QueryClientProvider client={queryClient}>

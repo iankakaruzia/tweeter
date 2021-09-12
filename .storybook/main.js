@@ -1,6 +1,6 @@
 module.exports = {
   typescript: {
-    reactDocgen: 'none',
+    reactDocgen: "none",
   },
   stories: [
     "../src/components/**/stories.tsx"
@@ -8,7 +8,8 @@ module.exports = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "storybook-addon-next-router"
+    "storybook-addon-next-router",
+    "@storybook/addon-a11y"
   ],
   webpackFinal: (config) => {
     config.resolve.modules.push(`${process.cwd()}/src`)

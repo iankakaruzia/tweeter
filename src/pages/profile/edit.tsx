@@ -1,4 +1,6 @@
 import { GetServerSidePropsContext } from 'next'
+import { dehydrate, QueryClient } from 'react-query'
+import { meRequest } from 'services/user'
 import ProfileEditTemplate from 'templates/ProfileEdit'
 import protectedRoutes from 'utils/protected-routes'
 
@@ -7,15 +9,27 @@ export default function ProfileEdit() {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const isAuthenticated = await protectedRoutes(context)
+  const authenticationCookie = await protectedRoutes(context)
 
-  if (!isAuthenticated) {
+  if (!authenticationCookie) {
     return {
       props: {}
     }
   }
 
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery(
+    'user-edit',
+    () => meRequest(authenticationCookie),
+    {
+      staleTime: Infinity,
+      cacheTime: Infinity
+    }
+  )
+
   return {
-    props: {}
+    props: {
+      dehydratedState: dehydrate(queryClient)
+    }
   }
 }

@@ -82,7 +82,7 @@ export const ImageWrapper = styled.div`
   }
 `
 
-export const ChangePhoto = styled.button`
+export const UpdateButton = styled.button`
   ${({ theme }) => css`
     font-weight: ${theme.font.medium};
     font-size: ${theme.font.sizes.xxsmall};
@@ -95,5 +95,18 @@ export const ChangePhoto = styled.button`
     background: transparent;
     border: none;
     color: ${theme.colors.darkGray};
+  `}
+`
+
+export const UsernameLabel = styled.p`
+  ${({ theme }) => css`
+    color: ${theme.colors.text};
+    font-weight: ${theme.font.medium};
+    font-size: ${theme.font.sizes.xxsmall};
+    letter-spacing: -0.035em;
+
+    > strong {
+      margin-left: 1rem;
+    }
   `}
 `
