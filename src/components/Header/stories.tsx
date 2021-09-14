@@ -14,3 +14,9 @@ export default {
 } as Meta
 
 export const Default: Story = () => <Header />
+
+Default.args = {
+  user: {
+    username: 'iankakaruzia'
+  }
+}

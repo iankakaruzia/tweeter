@@ -1,20 +1,31 @@
+import { AuthContextDefaultValues } from 'hooks/use-auth'
 import { render, screen, fireEvent } from 'utils/test-util'
 
 import Header from '.'
 
-// TODO: Fix unit tests
-describe.skip('<Header />', () => {
-  it('should render header', () => {
-    render(<Header />)
+const user = {
+  username: 'some_username',
+  email: 'some_email'
+}
 
-    expect(screen.getByRole('img', { name: /some name/i })).toBeInTheDocument()
+describe('<Header />', () => {
+  it('should render header', () => {
+    render(<Header />, {
+      authProviderProps: { ...AuthContextDefaultValues, user: { ...user } }
+    })
+
+    expect(
+      screen.getByRole('img', { name: 'Profile of some_username' })
+    ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Home/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Explore/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Bookmarks/i })).toBeInTheDocument()
   })
 
   it('should open the dropdown menu', () => {
-    render(<Header />)
+    render(<Header />, {
+      authProviderProps: { ...AuthContextDefaultValues, user: { ...user } }
+    })
 
     const dropdownMenu = screen.getByRole('menu', { hidden: true })
     expect(dropdownMenu.getAttribute('aria-hidden')).toBe('true')
@@ -24,10 +35,10 @@ describe.skip('<Header />', () => {
     expect(dropdownMenu.getAttribute('aria-hidden')).toBe('false')
     expect(dropdownMenu).toHaveStyle({ opacity: 1 })
     expect(
-      screen.getByRole('button', { name: /My Profile/i })
+      screen.getByRole('link', { name: /My Profile/i })
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: /Group Chat/i })
+      screen.getByRole('link', { name: /Group Chat/i })
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Logout/i })).toBeInTheDocument()
 

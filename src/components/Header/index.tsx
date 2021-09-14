@@ -50,7 +50,7 @@ const Header = () => {
           <S.ImageWrapper>
             <Image
               src={user.profilePhoto ?? '/img/default-avatar.jpg'}
-              alt={user.username}
+              alt={`Profile of ${user.username}`}
               width='32'
               height='32'
             />
@@ -77,11 +77,13 @@ const Header = () => {
             <AccountCircle size={16} /> My Profile
           </S.DropdownOption>
         </Link>
-        <S.DropdownOption>
-          <People size={16} /> Group Chat
-        </S.DropdownOption>
+        <Link href='/home' passHref>
+          <S.DropdownOption>
+            <People size={16} /> Group Chat
+          </S.DropdownOption>
+        </Link>
         <S.DropdownSeparator />
-        <S.DropdownLogoutOption onClick={logout}>
+        <S.DropdownLogoutOption as='button' onClick={logout}>
           <ExitToApp color='#EB5757' size={16} /> Logout
         </S.DropdownLogoutOption>
       </S.Dropdown>
