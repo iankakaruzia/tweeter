@@ -1,7 +1,7 @@
+import 'server.mock'
 import { renderHook } from '@testing-library/react-hooks'
-import { AxiosInstance, AxiosResponse } from 'axios'
-import { act } from 'utils/test-util'
-import { api } from 'services/api'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { act, waitFor } from 'utils/test-util'
 import { AuthProvider, useAuth } from '.'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -10,67 +10,33 @@ useRouter.mockImplementation(() => ({
   query: {},
   push: jest.fn()
 }))
-jest.mock('services/api')
 
-// TODO: Fix unit tests
-describe.skip('useAuth', () => {
-  const mockedApi = api as jest.Mocked<AxiosInstance>
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    }
+  }
+})
 
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
+const setupWrapper = ({ authenticated = false } = {}) => {
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider authenticated={authenticated}>{children}</AuthProvider>
+    </QueryClientProvider>
+  )
+  return { wrapper }
+}
 
+describe('useAuth', () => {
   describe('login', () => {
     it('should login the user correctly', async () => {
-      const mockedResponse: AxiosResponse = {
-        data: {
-          email: 'test@test.com',
-          username: 'test'
-        },
-        status: 201,
-        statusText: 'OK',
-        headers: {},
-        config: {}
-      }
-      mockedApi.post.mockResolvedValueOnce(mockedResponse)
-      const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <AuthProvider authenticated={false}>{children}</AuthProvider>
-      )
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(), {
-        wrapper
-      })
-      const params = {
-        usernameOrEmail: 'test@test.com',
-        password: '123456789'
-      }
-
-      act(() => {
-        result.current.login(params)
-      })
-
-      expect(mockedApi.post).toHaveBeenCalledWith(
-        'login',
-        { ...params },
-        { withCredentials: true }
-      )
-
-      await waitForNextUpdate()
-
-      expect(result.current.isAuthenticated).toBe(true)
-      expect(result.current.user?.email).toBe('test@test.com')
-      expect(result.current.user?.username).toBe('test')
-    })
-
-    it('should set user as undefined if login throws', async () => {
-      mockedApi.post.mockRejectedValueOnce(new Error())
-      const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <AuthProvider authenticated={false}>{children}</AuthProvider>
-      )
+      const { wrapper } = setupWrapper()
       const { result } = renderHook(() => useAuth(), {
         wrapper
       })
       const params = {
-        usernameOrEmail: 'test@test.com',
+        usernameOrEmail: 'janedoe',
         password: '123456789'
       }
 
@@ -78,76 +44,65 @@ describe.skip('useAuth', () => {
         result.current.login(params)
       })
 
-      expect(mockedApi.post).toHaveBeenCalledWith(
-        'login',
-        { ...params },
-        { withCredentials: true }
-      )
+      await waitFor(() => {
+        expect(result.current.isAuthenticated).toBe(true)
+        expect(result.current.user?.email).toBe('janedoe@email.com')
+        expect(result.current.user?.username).toBe('janedoe')
+      })
+    })
 
-      expect(result.current.isAuthenticated).toBe(false)
-      expect(result.current.user).toBeUndefined()
+    it('should set user as undefined if login throws', async () => {
+      const { wrapper } = setupWrapper()
+      const { result } = renderHook(() => useAuth(), {
+        wrapper
+      })
+      const params = {
+        usernameOrEmail: 'invalid_user',
+        password: '123456789'
+      }
+
+      act(() => {
+        result.current.login(params)
+      })
+
+      await waitFor(() => {
+        expect(result.current.isAuthenticated).toBe(false)
+        expect(result.current.user).toBeUndefined()
+      })
     })
   })
 
   it('should logout the user correctly', async () => {
-    const mockedResponse: AxiosResponse = {
-      data: {},
-      status: 201,
-      statusText: 'OK',
-      headers: {},
-      config: {}
-    }
-    mockedApi.post.mockResolvedValueOnce(mockedResponse)
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <AuthProvider authenticated={true}>{children}</AuthProvider>
-    )
-    const { result, waitForNextUpdate } = renderHook(() => useAuth(), {
+    const { wrapper } = setupWrapper({ authenticated: true })
+    const { result } = renderHook(() => useAuth(), {
       wrapper
     })
 
     act(() => {
       result.current.user = {
-        email: 'test@test.com',
-        username: 'test'
+        email: 'janedoe@email.com',
+        username: 'janedoe'
       }
     })
 
     expect(result.current.isAuthenticated).toBe(true)
-    expect(result.current.user?.email).toBe('test@test.com')
-    expect(result.current.user?.username).toBe('test')
+    expect(result.current.user?.email).toBe('janedoe@email.com')
+    expect(result.current.user?.username).toBe('janedoe')
 
     act(() => {
       result.current.logout()
     })
 
-    expect(mockedApi.post).toHaveBeenCalledWith('logout', null, {
-      withCredentials: true
+    await waitFor(() => {
+      expect(result.current.isAuthenticated).toBe(false)
+      expect(result.current.user).toBeUndefined()
     })
-
-    await waitForNextUpdate()
-
-    expect(result.current.isAuthenticated).toBe(false)
-    expect(result.current.user).toBeUndefined()
   })
 
   describe('ssoLogin', () => {
     it('should login with sso correctly', async () => {
-      const mockedResponse: AxiosResponse = {
-        data: {
-          email: 'test@test.com',
-          username: 'test'
-        },
-        status: 200,
-        statusText: 'OK',
-        headers: {},
-        config: {}
-      }
-
-      mockedApi.get.mockResolvedValueOnce(mockedResponse)
-      const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <AuthProvider authenticated={true}>{children}</AuthProvider>
-      )
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(), {
+      const { wrapper } = setupWrapper()
+      const { result } = renderHook(() => useAuth(), {
         wrapper
       })
 
@@ -155,38 +110,11 @@ describe.skip('useAuth', () => {
         result.current.ssoLogin()
       })
 
-      expect(mockedApi.get).toHaveBeenCalledWith('validate', {
-        withCredentials: true
+      await waitFor(() => {
+        expect(result.current.isAuthenticated).toBe(true)
+        expect(result.current.user?.email).toBe('janedoe@email.com')
+        expect(result.current.user?.username).toBe('janedoe')
       })
-
-      await waitForNextUpdate()
-
-      expect(result.current.isAuthenticated).toBe(true)
-      expect(result.current.user?.email).toBe('test@test.com')
-      expect(result.current.user?.username).toBe('test')
-    })
-
-    it('should set user as undefined if ssoLogin throws', async () => {
-      mockedApi.get.mockRejectedValueOnce(new Error())
-      const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <AuthProvider authenticated={false}>{children}</AuthProvider>
-      )
-      const { result, waitForNextUpdate } = renderHook(() => useAuth(), {
-        wrapper
-      })
-
-      act(() => {
-        result.current.ssoLogin()
-      })
-
-      expect(mockedApi.get).toHaveBeenCalledWith('validate', {
-        withCredentials: true
-      })
-
-      await waitForNextUpdate()
-
-      expect(result.current.isAuthenticated).toBe(false)
-      expect(result.current.user).toBeUndefined()
     })
   })
 })
