@@ -6,6 +6,7 @@ const authFieldValidations = {
     .required(),
   username: Joi.string().min(2).max(20).required(),
   usernameOrEmail: Joi.string().min(2).required(),
+  currentPassword: Joi.string().min(8).max(20).required(),
   password: Joi.string().min(8).max(20).required(),
   passwordConfirmation: Joi.string()
     .valid(Joi.ref('password'))
@@ -76,5 +77,32 @@ export function resetPasswordValidate(values: ResetPasswordValues) {
   const { password, passwordConfirmation } = authFieldValidations
 
   const schema = Joi.object({ password, passwordConfirmation })
+  return getFieldErrors(schema.validate(values, { abortEarly: false }))
+}
+
+type UpdateCurrentPasswordValues = {
+  currentPassword: string
+  password: string
+  passwordConfirmation: string
+}
+
+export function updateCurrentPasswordValidate(
+  values: UpdateCurrentPasswordValues
+) {
+  const { currentPassword, password, passwordConfirmation } =
+    authFieldValidations
+
+  const schema = Joi.object({ currentPassword, password, passwordConfirmation })
+  return getFieldErrors(schema.validate(values, { abortEarly: false }))
+}
+
+type UpdateUsernameValues = {
+  username: string
+}
+
+export function updateUsernameValidate(values: UpdateUsernameValues) {
+  const { username } = authFieldValidations
+
+  const schema = Joi.object({ username })
   return getFieldErrors(schema.validate(values, { abortEarly: false }))
 }

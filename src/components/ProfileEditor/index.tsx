@@ -10,11 +10,20 @@ import { meRequest, ProfileInfo } from 'services/user'
 import * as S from './styles'
 
 const ProfileEditor = () => {
-  const { data } = useQuery<ProfileInfo>('user-edit', () => meRequest(), {
-    staleTime: Infinity,
-    cacheTime: Infinity
-  })
+  const { data, refetch } = useQuery<ProfileInfo>(
+    'user-edit',
+    () => meRequest(),
+    {
+      staleTime: Infinity,
+      cacheTime: Infinity
+    }
+  )
   const { isVisible, toggleModal } = useModal()
+
+  const onSuccess = async () => {
+    await refetch()
+    toggleModal()
+  }
 
   return (
     <>
@@ -100,7 +109,7 @@ const ProfileEditor = () => {
         isVisible={isVisible}
         toggleModal={toggleModal}
       >
-        <UpdateUsernameModal />
+        <UpdateUsernameModal onSuccess={onSuccess} />
       </Modal>
     </>
   )

@@ -12,6 +12,8 @@ const ProfileViewer = () => {
   const { data } = useQuery<ProfileInfo>('user', () => meRequest())
   const { isVisible, toggleModal } = useModal()
 
+  const onSuccess = () => toggleModal()
+
   return (
     <>
       <S.Wrapper>
@@ -65,7 +67,7 @@ const ProfileViewer = () => {
         isVisible={isVisible}
         toggleModal={toggleModal}
       >
-        <UpdatePasswordModal />
+        <UpdatePasswordModal onSuccess={onSuccess} />
       </Modal>
     </>
   )

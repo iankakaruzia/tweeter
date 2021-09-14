@@ -38,6 +38,7 @@ export type AuthContextData = {
   login: (params: LoginParams) => Promise<boolean | undefined>
   ssoLogin: () => Promise<boolean | undefined>
   logout: () => Promise<void>
+  setUserInfo: (user: User) => void
 }
 
 export const AuthContextDefaultValues: AuthContextData = {
@@ -47,7 +48,8 @@ export const AuthContextDefaultValues: AuthContextData = {
   isLoading: false,
   login: () => null as unknown as Promise<undefined>,
   ssoLogin: () => null as unknown as Promise<undefined>,
-  logout: () => null as unknown as Promise<void>
+  logout: () => null as unknown as Promise<void>,
+  setUserInfo: () => null as unknown as Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -151,7 +153,8 @@ const AuthProvider = ({ children, authenticated }: AuthProviderProps) => {
         isLoading,
         ssoLogin,
         login,
-        logout
+        logout,
+        setUserInfo
       }}
     >
       {children}
