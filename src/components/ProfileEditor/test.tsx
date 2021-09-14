@@ -1,24 +1,24 @@
-import { render, screen } from 'utils/test-util'
+import 'server.mock'
+import { render, screen, waitFor } from 'utils/test-util'
 
 import ProfileEditor from '.'
 
-// TODO: Fix unit tests
-describe.skip('<ProfileEditor />', () => {
-  it('should render the ProfileEditor', () => {
+describe('<ProfileEditor />', () => {
+  it('should render the ProfileEditor', async () => {
     render(<ProfileEditor />)
 
-    expect(
-      screen.getByRole('img', { name: 'Ianka Karúzia' })
-    ).toBeInTheDocument()
-    expect(
-      screen.getByPlaceholderText('Enter your name...')
-    ).toBeInTheDocument()
-    expect(screen.getByPlaceholderText('Enter your bio...')).toBeInTheDocument()
-    expect(
-      screen.getByPlaceholderText('Enter your phone...')
-    ).toBeInTheDocument()
-    expect(
-      screen.getByPlaceholderText('Enter your email...')
-    ).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByRole('img', { name: 'janedoe' })).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText('Enter your name...')
+      ).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText('Enter your bio...')
+      ).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText('(XX) X XXXX-XXXX')
+      ).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('DD/MM/YYYY')).toBeInTheDocument()
+    })
   })
 })
