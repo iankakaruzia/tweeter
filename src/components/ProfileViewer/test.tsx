@@ -1,19 +1,21 @@
-import { render, screen } from 'utils/test-util'
+import 'server.mock'
+import { render, screen, waitFor } from 'utils/test-util'
 
 import ProfileViewer from '.'
 
-// TODO: Fix unit tests
-describe.skip('<ProfileViewer />', () => {
-  it('should render the ProfileViewer', () => {
+describe('<ProfileViewer />', () => {
+  it('should render the ProfileViewer', async () => {
     render(<ProfileViewer />)
 
-    expect(screen.getByRole('img', { name: 'something' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Edit/i })).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: /Update Password/i })
-    ).toBeInTheDocument()
-    expect(screen.getByText('something')).toBeInTheDocument()
-    expect(screen.getByText('something')).toBeInTheDocument()
-    expect(screen.getByText('something')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByRole('img', { name: 'janedoe' })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /Edit/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /Update Password/i })
+      ).toBeInTheDocument()
+      expect(screen.getByText('Name')).toBeInTheDocument()
+      expect(screen.getByText('Bio')).toBeInTheDocument()
+      expect(screen.getByText('Email')).toBeInTheDocument()
+    })
   })
 })
