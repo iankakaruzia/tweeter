@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Email, Https } from '@styled-icons/material-rounded'
 
@@ -12,10 +12,14 @@ import { useAuth } from 'hooks/use-auth'
 import * as S from './styles'
 
 const LoginForm = () => {
-  const { login } = useAuth()
+  const { login, error, clearError } = useAuth()
   const [fieldError, setFieldError] = useState<FieldErrors>({})
   const [usernameOrEmail, setUsernameOrEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    clearError()
+  }, [clearError])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -37,6 +41,11 @@ const LoginForm = () => {
 
   return (
     <FormWrapper>
+      {error && (
+        <S.ErrorWrapper>
+          <p>{error}</p>
+        </S.ErrorWrapper>
+      )}
       <form onSubmit={handleSubmit}>
         <TextField
           placeholder='Username or Email'

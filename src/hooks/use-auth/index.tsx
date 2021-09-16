@@ -3,7 +3,8 @@ import {
   ReactNode,
   useState,
   useContext,
-  useEffect
+  useEffect,
+  useCallback
 } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
@@ -20,6 +21,7 @@ import {
   removeStorageItem,
   setStorageItem
 } from 'utils/localStorage'
+import { AxiosError } from 'axios'
 
 const AUTH_KEY = 'user'
 
@@ -39,6 +41,7 @@ export type AuthContextData = {
   ssoLogin: () => Promise<boolean | undefined>
   logout: () => Promise<void>
   setUserInfo: (user: User) => void
+  clearError: () => void
 }
 
 export const AuthContextDefaultValues: AuthContextData = {
@@ -49,7 +52,8 @@ export const AuthContextDefaultValues: AuthContextData = {
   login: () => null as unknown as Promise<undefined>,
   ssoLogin: () => null as unknown as Promise<undefined>,
   logout: () => null as unknown as Promise<void>,
-  setUserInfo: () => null as unknown as Promise<void>
+  setUserInfo: () => null as unknown as Promise<void>,
+  clearError: () => null as unknown as Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -83,17 +87,26 @@ const AuthProvider = ({ children, authenticated }: AuthProviderProps) => {
     setIsLoading(false)
   }
 
+  const clearError = useCallback(() => {
+    setError('')
+  }, [])
+
   const setUserInfo = (user: User) => {
     setStorageItem(AUTH_KEY, user)
     setUser(user)
     setIsAuthenticated(true)
   }
 
-  const loginQuery = useMutation<{ user: User }, Error, LoginParams>(
+  const loginQuery = useMutation<{ user: User }, AxiosError, LoginParams>(
     loginRequest,
     {
       onSuccess: (data) => {
         setUserInfo(data.user)
+      },
+      onError: () => {
+        setError(
+          'Unable to login, please double check the credentials provided'
+        )
       }
     }
   )
@@ -154,7 +167,8 @@ const AuthProvider = ({ children, authenticated }: AuthProviderProps) => {
         ssoLogin,
         login,
         logout,
-        setUserInfo
+        setUserInfo,
+        clearError
       }}
     >
       {children}
