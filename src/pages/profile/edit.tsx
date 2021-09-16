@@ -2,7 +2,7 @@ import { GetServerSidePropsContext } from 'next'
 import { dehydrate, QueryClient } from 'react-query'
 import { meRequest } from 'services/user'
 import ProfileEditTemplate from 'templates/ProfileEdit'
-import protectedRoutes from 'utils/protected-routes'
+import { protectedRoutes } from 'utils/routes'
 
 export default function ProfileEdit() {
   return <ProfileEditTemplate />

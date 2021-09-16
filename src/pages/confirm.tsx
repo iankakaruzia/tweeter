@@ -1,7 +1,9 @@
 import Auth from 'templates/Auth'
 import ConfirmAccountForm from 'components/ConfirmAccountForm'
+import { GetServerSidePropsContext } from 'next'
+import { publicRoutes } from 'utils/routes'
 
-function ConfirmAccount() {
+export default function ConfirmAccount() {
   return (
     <Auth title='Confirm your Account'>
       <ConfirmAccountForm />
@@ -9,4 +11,10 @@ function ConfirmAccount() {
   )
 }
 
-export default ConfirmAccount
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  await publicRoutes(context)
+
+  return {
+    props: {}
+  }
+}

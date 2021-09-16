@@ -1,7 +1,9 @@
+import { GetServerSidePropsContext } from 'next'
 import ForgotPasswordForm from 'components/ForgotPasswordForm'
 import Auth from 'templates/Auth'
+import { publicRoutes } from 'utils/routes'
 
-function ForgotPassword() {
+export default function ForgotPassword() {
   return (
     <Auth title='Request a new Password'>
       <ForgotPasswordForm />
@@ -9,4 +11,10 @@ function ForgotPassword() {
   )
 }
 
-export default ForgotPassword
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  await publicRoutes(context)
+
+  return {
+    props: {}
+  }
+}

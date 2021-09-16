@@ -15,7 +15,7 @@ const isValidCookie = async (cookie: string) => {
   }
 }
 
-async function protectedRoutes(context: GetServerSidePropsContext) {
+export async function protectedRoutes(context: GetServerSidePropsContext) {
   let authenticationToken: string | undefined = undefined
   const cookies = nookies.get(context)
   const isValid = await isValidCookie(cookies.Authentication)
@@ -32,4 +32,11 @@ async function protectedRoutes(context: GetServerSidePropsContext) {
   return authenticationToken
 }
 
-export default protectedRoutes
+export async function publicRoutes(context: GetServerSidePropsContext) {
+  const cookies = nookies.get(context)
+  const isValid = await isValidCookie(cookies.Authentication)
+  if (isValid) {
+    context.res.setHeader('Location', '/home')
+    context.res.statusCode = 302
+  }
+}

@@ -1,7 +1,9 @@
+import { GetServerSidePropsContext } from 'next'
 import ResetPasswordForm from 'components/ResetPasswordForm'
 import Auth from 'templates/Auth'
+import { publicRoutes } from 'utils/routes'
 
-function ResetPassword() {
+export default function ResetPassword() {
   return (
     <Auth title='Reset your Password'>
       <ResetPasswordForm />
@@ -9,4 +11,10 @@ function ResetPassword() {
   )
 }
 
-export default ResetPassword
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  await publicRoutes(context)
+
+  return {
+    props: {}
+  }
+}

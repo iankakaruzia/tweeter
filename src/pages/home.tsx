@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next'
-import protectedRoutes from 'utils/protected-routes'
+import { protectedRoutes } from 'utils/routes'
 import HomeTemplate from 'templates/Home'
 
 export default function Home() {
