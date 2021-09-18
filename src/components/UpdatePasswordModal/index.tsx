@@ -53,10 +53,10 @@ const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
       if (isServiceError(error)) {
         if (error.response?.status === 400) {
           setError('Please check to see if there is any invalid input fields.')
+          return
         }
-      } else {
-        setError('Something went wrong! Please try again later.')
       }
+      setError('Something went wrong! Please try again later.')
     }
   }
 

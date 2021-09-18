@@ -4,6 +4,7 @@ import Button from 'components/Button'
 import TextField from 'components/TextField'
 import Modal from 'components/Modal'
 import UpdateUsernameModal from 'components/UpdateUsernameModal'
+import UpdateEmailModal from 'components/UpdateEmailModal'
 
 import useModal from 'hooks/use-modal'
 import { meRequest, ProfileInfo } from 'services/user'
@@ -18,11 +19,19 @@ const ProfileEditor = () => {
       cacheTime: Infinity
     }
   )
-  const { isVisible, toggleModal } = useModal()
+  const { isVisible: isVisibleUsername, toggleModal: toggleUsernameModal } =
+    useModal()
+  const { isVisible: isVisibleEmail, toggleModal: toggleEmailModal } =
+    useModal()
 
-  const onSuccess = async () => {
+  const onUsernameUpdateSuccess = async () => {
     await refetch()
-    toggleModal()
+    toggleUsernameModal()
+  }
+
+  const onEmailUpdateSuccess = async () => {
+    await refetch()
+    toggleEmailModal()
   }
 
   return (
@@ -50,9 +59,18 @@ const ProfileEditor = () => {
 
               <S.Section>
                 <S.UsernameLabel>
+                  Email: <strong>{data.email}</strong>
+                </S.UsernameLabel>
+                <S.UpdateButton onClick={toggleEmailModal}>
+                  Update Email
+                </S.UpdateButton>
+              </S.Section>
+
+              <S.Section>
+                <S.UsernameLabel>
                   Username: <strong>{data.username}</strong>
                 </S.UsernameLabel>
-                <S.UpdateButton onClick={toggleModal}>
+                <S.UpdateButton onClick={toggleUsernameModal}>
                   Update Username
                 </S.UpdateButton>
               </S.Section>
@@ -106,10 +124,18 @@ const ProfileEditor = () => {
       </S.Wrapper>
       <Modal
         headerText='Update Username'
-        isVisible={isVisible}
-        toggleModal={toggleModal}
+        isVisible={isVisibleUsername}
+        toggleModal={toggleUsernameModal}
       >
-        <UpdateUsernameModal onSuccess={onSuccess} />
+        <UpdateUsernameModal onSuccess={onUsernameUpdateSuccess} />
+      </Modal>
+
+      <Modal
+        headerText='Update Email'
+        isVisible={isVisibleEmail}
+        toggleModal={toggleEmailModal}
+      >
+        <UpdateEmailModal onSuccess={onEmailUpdateSuccess} />
       </Modal>
     </>
   )

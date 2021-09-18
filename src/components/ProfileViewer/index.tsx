@@ -31,35 +31,51 @@ const ProfileViewer = () => {
               <S.Edit>Edit</S.Edit>
             </Link>
           </S.Header>
-          <S.Section>
-            <S.Label>Photo</S.Label>
-            <S.ImageWrapper>
-              <Image
-                src={data?.profilePhoto ?? '/img/default-avatar.jpg'}
-                width='72'
-                height='72'
-                alt={data?.username}
-              />
-            </S.ImageWrapper>
-          </S.Section>
-          <S.Section>
-            <S.Label>Name</S.Label>
-            <S.Text>{data?.name ?? '-'}</S.Text>
-          </S.Section>
-          <S.Section>
-            <S.Label>Bio</S.Label>
-            <S.Text>{data?.bio ?? '-'}</S.Text>
-          </S.Section>
-          <S.Section>
-            <S.Label>Email</S.Label>
-            <S.Text>{data?.email ?? '-'}</S.Text>
-          </S.Section>
-          <S.Section>
-            <S.Label>Password</S.Label>
-            <S.UpdateButton onClick={toggleModal}>
-              Update Password
-            </S.UpdateButton>
-          </S.Section>
+          {data ? (
+            <>
+              <S.Section>
+                <S.Label>Photo</S.Label>
+                <S.ImageWrapper>
+                  <Image
+                    src={data.profilePhoto ?? '/img/default-avatar.jpg'}
+                    width='72'
+                    height='72'
+                    alt={data.username}
+                  />
+                </S.ImageWrapper>
+              </S.Section>
+              <S.Section>
+                <S.Label>Name</S.Label>
+                <S.Text>{data.name ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Bio</S.Label>
+                <S.Text>{data.bio ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Birthday</S.Label>
+                <S.Text>{data.birthday ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Email</S.Label>
+                <S.Text>{data.email ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Username</S.Label>
+                <S.Text>{data.username ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Password</S.Label>
+                <S.UpdateButton onClick={toggleModal}>
+                  Update Password
+                </S.UpdateButton>
+              </S.Section>
+            </>
+          ) : (
+            <div>
+              <p>Unable to load info</p>
+            </div>
+          )}
         </S.Content>
       </S.Wrapper>
       <Modal

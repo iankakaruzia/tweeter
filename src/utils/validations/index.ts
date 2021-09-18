@@ -106,3 +106,14 @@ export function updateUsernameValidate(values: UpdateUsernameValues) {
   const schema = Joi.object({ username })
   return getFieldErrors(schema.validate(values, { abortEarly: false }))
 }
+
+type UpdateEmailValues = {
+  email: string
+}
+
+export function updateEmailValidate(values: UpdateEmailValues) {
+  const { email } = authFieldValidations
+
+  const schema = Joi.object({ email })
+  return getFieldErrors(schema.validate(values, { abortEarly: false }))
+}

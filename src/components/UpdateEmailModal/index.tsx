@@ -1,31 +1,31 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ErrorOutline, Person } from '@styled-icons/material-rounded'
+import { ErrorOutline, Email } from '@styled-icons/material-rounded'
 
 import Button from 'components/Button'
 import TextField from 'components/TextField'
 
 import * as S from './styles'
-import { FieldErrors, updateUsernameValidate } from 'utils/validations'
+import { FieldErrors, updateEmailValidate } from 'utils/validations'
 import { api, isServiceError } from 'services/api'
 import { useAuth } from 'hooks/use-auth'
 
-type UpdateUsernameModalProps = {
+type UpdateEmailModalProps = {
   onSuccess: () => void
 }
 
-const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
+const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
   const { setUserInfo } = useAuth()
   const [error, setError] = useState('')
   const [fieldError, setFieldError] = useState<FieldErrors>({})
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setError('')
 
-    const errors = updateUsernameValidate({
-      username
+    const errors = updateEmailValidate({
+      email
     })
 
     if (Object.keys(errors).length) {
@@ -37,14 +37,14 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
 
     try {
       const { data } = await api.patch(
-        'user/username',
+        'user/email',
         {
-          username
+          email
         },
         { withCredentials: true }
       )
       setUserInfo(data.user)
-      toast.success('Username updated!')
+      toast.success('Email updated!')
       onSuccess()
     } catch (error) {
       if (isServiceError(error)) {
@@ -52,7 +52,7 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
           setError('Please check to see if there is any invalid input fields.')
           return
         } else if (error.response?.status === 409) {
-          setError('Username taken!')
+          setError('Email taken!')
           return
         }
       }
@@ -69,13 +69,14 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
       )}
       <form onSubmit={handleSubmit}>
         <TextField
-          icon={<Person />}
-          placeholder='Username'
-          label='New Username'
-          error={fieldError?.username}
-          name='username'
-          value={username}
-          onInputChange={(text) => setUsername(text)}
+          icon={<Email />}
+          type='email'
+          placeholder='Email'
+          label='New Email'
+          error={fieldError?.email}
+          name='email'
+          value={email}
+          onInputChange={(text) => setEmail(text)}
         />
         <Button type='submit'>Update</Button>
       </form>
@@ -83,4 +84,4 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
   )
 }
 
-export default UpdateUsernameModal
+export default UpdateEmailModal

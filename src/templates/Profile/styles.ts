@@ -4,6 +4,7 @@ export const Footer = styled.div`
   max-width: 84.5rem;
   margin: 0 auto;
   margin-top: 1.5rem;
+  padding-bottom: 2rem;
 
   display: flex;
   justify-content: space-between;
