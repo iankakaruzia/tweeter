@@ -1,4 +1,5 @@
 import styled, { css, DefaultTheme } from 'styled-components'
+import { transparentize } from 'polished'
 
 import { TextFieldProps, TextInputVariant } from '.'
 
@@ -28,7 +29,7 @@ export const InputWrapper = styled.div`
 
 const inputModifiers = {
   primary: (theme: DefaultTheme) => css`
-    padding: ${theme.spacings.xxsmall} 0;
+    padding: ${theme.spacings.xxsmall} ${theme.spacings.xxsmall};
 
     color: ${theme.colors.text};
     font-size: ${theme.font.sizes.xsmall};
@@ -36,7 +37,7 @@ const inputModifiers = {
     font-weight: ${theme.font.normal};
   `,
   secondary: (theme: DefaultTheme) => css`
-    padding: ${theme.spacings.xsmall} 0;
+    padding: ${theme.spacings.xsmall} ${theme.spacings.xxsmall};
 
     font-weight: ${theme.font.medium};
     font-size: ${theme.font.sizes.xxsmall};
@@ -95,6 +96,31 @@ export const Icon = styled.div`
 
     & > svg {
       width: 100%;
+    }
+  `}
+`
+export const PasswordIcon = styled.button`
+  ${({ theme }) => css`
+    width: 2.5rem;
+    cursor: pointer;
+    color: ${theme.colors.darkGray};
+    background: transparent;
+    border: 0;
+    align-self: center;
+    align-items: center;
+    display: flex;
+    transition: color 0.2s;
+
+    & > svg {
+      width: 100%;
+    }
+
+    &:focus {
+      outline: 1px dashed;
+    }
+
+    &:hover {
+      color: ${transparentize(0.2, theme.colors.darkGray)};
     }
   `}
 `
