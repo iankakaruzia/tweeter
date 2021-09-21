@@ -11,6 +11,7 @@ export type ButtonProps = {
   outlined?: boolean
   color?: 'primary' | 'gray'
   as?: React.ElementType
+  isLoading?: boolean
 } & ButtonTypes
 
 const Button: React.ForwardRefRenderFunction<S.WrapperProps, ButtonProps> = (
@@ -19,6 +20,7 @@ const Button: React.ForwardRefRenderFunction<S.WrapperProps, ButtonProps> = (
     fullWidth = false,
     outlined = false,
     color = 'primary',
+    isLoading = false,
     ...props
   },
   ref
@@ -28,10 +30,11 @@ const Button: React.ForwardRefRenderFunction<S.WrapperProps, ButtonProps> = (
       fullWidth={fullWidth}
       outlined={outlined}
       color={color}
+      isLoading={isLoading}
       ref={ref}
       {...props}
     >
-      {!!children && <span>{children}</span>}
+      {!!children && !isLoading && <span>{children}</span>}
     </S.Button>
   )
 }

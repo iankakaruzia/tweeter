@@ -1,11 +1,22 @@
-import styled, { css, DefaultTheme } from 'styled-components'
+import styled, { css, DefaultTheme, keyframes } from 'styled-components'
 import { darken } from 'polished'
 
 export type WrapperProps = {
   fullWidth: boolean
   outlined: boolean
   color: 'primary' | 'gray'
+  isLoading: boolean
 }
+
+const buttonSpinner = keyframes`
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+`
 
 const wrapperModifiers = {
   fullWidth: () => css`
@@ -62,11 +73,29 @@ const wrapperModifiers = {
         color: ${darken(0.2, theme.colors.darkGray)};
       }
     `}
+  `,
+  isLoading: (theme: DefaultTheme) => css`
+    &::after {
+      content: '';
+      position: absolute;
+      width: 2.4rem;
+      height: 2.4rem;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      border: 0.4rem solid transparent;
+      border-top-color: ${theme.colors.btnText};
+      border-radius: 50%;
+      animation: ${buttonSpinner} 1s ease infinite;
+    }
   `
 }
 
 export const Button = styled.button<WrapperProps>`
-  ${({ theme, outlined, fullWidth, color, disabled }) => css`
+  ${({ theme, outlined, fullWidth, color, disabled, isLoading }) => css`
+    position: relative;
     height: 3.8rem;
     padding: ${theme.spacings.xxsmall} ${theme.spacings.medium};
 
@@ -97,5 +126,6 @@ export const Button = styled.button<WrapperProps>`
     ${!!fullWidth && wrapperModifiers.fullWidth};
     ${!!color && wrapperModifiers[color](outlined, theme)};
     ${disabled && wrapperModifiers.disabled()};
+    ${isLoading && wrapperModifiers.isLoading(theme)};
   `}
 `

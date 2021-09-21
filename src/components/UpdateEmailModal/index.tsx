@@ -17,6 +17,7 @@ type UpdateEmailModalProps = {
 const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
   const { setUserInfo } = useAuth()
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [fieldError, setFieldError] = useState<FieldErrors>({})
   const [email, setEmail] = useState('')
 
@@ -34,7 +35,7 @@ const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
     }
 
     setFieldError({})
-
+    setIsLoading(true)
     try {
       const { data } = await api.patch(
         'user/email',
@@ -45,8 +46,10 @@ const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
       )
       setUserInfo(data.user)
       toast.success('Email updated!')
+      setIsLoading(false)
       onSuccess()
     } catch (error) {
+      setIsLoading(false)
       if (isServiceError(error)) {
         if (error.response?.status === 400) {
           setError('Please check to see if there is any invalid input fields.')
@@ -78,7 +81,9 @@ const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
           value={email}
           onInputChange={(text) => setEmail(text)}
         />
-        <Button type='submit'>Update</Button>
+        <Button type='submit' disabled={isLoading} isLoading={isLoading}>
+          Update
+        </Button>
       </form>
     </S.Container>
   )

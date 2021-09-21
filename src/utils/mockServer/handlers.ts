@@ -60,7 +60,7 @@ export const handlers = [
   }),
   rest.post('http://localhost:8080/logout', (req, res, ctx) => {
     return res(
-      ctx.status(201),
+      ctx.status(200),
       ctx.json({
         message: 'Logged out'
       })

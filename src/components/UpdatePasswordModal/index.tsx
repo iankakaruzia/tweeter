@@ -15,6 +15,7 @@ type UpdatePasswordModalProps = {
 
 const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [fieldError, setFieldError] = useState<FieldErrors>({})
   const [currentPassword, setCurrentPassword] = useState('')
   const [password, setPassword] = useState('')
@@ -36,7 +37,7 @@ const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
     }
 
     setFieldError({})
-
+    setIsLoading(true)
     try {
       await api.patch(
         'user/password',
@@ -48,8 +49,10 @@ const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
         { withCredentials: true }
       )
       toast.success('Password updated!')
+      setIsLoading(false)
       onSuccess()
     } catch (error) {
+      setIsLoading(false)
       if (isServiceError(error)) {
         if (error.response?.status === 400) {
           setError('Please check to see if there is any invalid input fields.')
@@ -95,7 +98,9 @@ const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
           type='password'
           onInputChange={(text) => setPasswordConfirmation(text)}
         />
-        <Button type='submit'>Update</Button>
+        <Button type='submit' disabled={isLoading} isLoading={isLoading}>
+          Update
+        </Button>
       </form>
     </S.Container>
   )

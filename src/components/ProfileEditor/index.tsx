@@ -9,6 +9,7 @@ import UpdateEmailModal from 'components/UpdateEmailModal'
 import useModal from 'hooks/use-modal'
 import { meRequest, ProfileInfo } from 'services/user'
 import * as S from './styles'
+import UpdateProfilePhotoModal from 'components/UpdateProfilePhotoModal'
 
 const ProfileEditor = () => {
   const { data, refetch } = useQuery<ProfileInfo>(
@@ -23,6 +24,10 @@ const ProfileEditor = () => {
     useModal()
   const { isVisible: isVisibleEmail, toggleModal: toggleEmailModal } =
     useModal()
+  const {
+    isVisible: isVisibleProfilePhoto,
+    toggleModal: toggleProfilePhotoModal
+  } = useModal()
 
   const onUsernameUpdateSuccess = async () => {
     await refetch()
@@ -32,6 +37,11 @@ const ProfileEditor = () => {
   const onEmailUpdateSuccess = async () => {
     await refetch()
     toggleEmailModal()
+  }
+
+  const onProfilePhotoUpdateSuccess = async () => {
+    await refetch()
+    toggleProfilePhotoModal()
   }
 
   return (
@@ -54,7 +64,9 @@ const ProfileEditor = () => {
                     height='72'
                   />
                 </S.ImageWrapper>
-                <S.UpdateButton>Change Photo</S.UpdateButton>
+                <S.UpdateButton onClick={toggleProfilePhotoModal}>
+                  Change Photo
+                </S.UpdateButton>
               </S.Section>
 
               <S.Section>
@@ -136,6 +148,14 @@ const ProfileEditor = () => {
         toggleModal={toggleEmailModal}
       >
         <UpdateEmailModal onSuccess={onEmailUpdateSuccess} />
+      </Modal>
+
+      <Modal
+        headerText='Update Profile Photo'
+        isVisible={isVisibleProfilePhoto}
+        toggleModal={toggleProfilePhotoModal}
+      >
+        <UpdateProfilePhotoModal onSuccess={onProfilePhotoUpdateSuccess} />
       </Modal>
     </>
   )

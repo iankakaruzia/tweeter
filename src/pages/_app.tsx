@@ -12,6 +12,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { AuthProvider } from 'hooks/use-auth'
+import { FileProvider } from 'hooks/use-file'
 import GlobalStyles from 'styles/global'
 import theme from 'styles/theme'
 
@@ -36,40 +37,42 @@ const MyApp = ({ authenticated, pageProps, Component }: AppProps) => {
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider theme={theme}>
           <AuthProvider authenticated={authenticated}>
-            <Head>
-              <title>Tweeter</title>
-              <link
-                rel='shortcut icon'
-                href='/img/favicon.png'
-                type='image/x-icon'
+            <FileProvider>
+              <Head>
+                <title>Tweeter</title>
+                <link
+                  rel='shortcut icon'
+                  href='/img/favicon.png'
+                  type='image/x-icon'
+                />
+                <link rel='apple-touch-icon' href='/img/apple-touch-icon.png' />
+                <link rel='manifest' href='/manifest.json' />
+                <meta
+                  name='description'
+                  content='Tweeter project with Next.JS and typescript'
+                />
+              </Head>
+              <GlobalStyles />
+              <NextProgress
+                color='#2F80ED'
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={5}
               />
-              <link rel='apple-touch-icon' href='/img/apple-touch-icon.png' />
-              <link rel='manifest' href='/manifest.json' />
-              <meta
-                name='description'
-                content='Tweeter project with Next.JS and typescript'
+              <ToastContainer
+                position='top-right'
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
               />
-            </Head>
-            <GlobalStyles />
-            <NextProgress
-              color='#2F80ED'
-              startPosition={0.3}
-              stopDelayMs={200}
-              height={5}
-            />
-            <ToastContainer
-              position='top-right'
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-            <Component {...pageProps} />
-            <ReactQueryDevtools initialIsOpen={false} />
+              <Component {...pageProps} />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </FileProvider>
           </AuthProvider>
         </ThemeProvider>
       </Hydrate>

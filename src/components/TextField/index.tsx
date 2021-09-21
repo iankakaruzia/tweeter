@@ -80,6 +80,7 @@ const TextInput = ({
         />
         {isPassword && (
           <S.PasswordIcon
+            type='button'
             aria-label={showPassword ? 'hide password' : 'reveal password'}
             onClick={togglePasswordVisibiliy}
           >

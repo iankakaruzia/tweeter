@@ -16,6 +16,7 @@ type UpdateUsernameModalProps = {
 
 const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
   const { setUserInfo } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [fieldError, setFieldError] = useState<FieldErrors>({})
   const [username, setUsername] = useState('')
@@ -34,7 +35,7 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
     }
 
     setFieldError({})
-
+    setIsLoading(true)
     try {
       const { data } = await api.patch(
         'user/username',
@@ -45,8 +46,10 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
       )
       setUserInfo(data.user)
       toast.success('Username updated!')
+      setIsLoading(false)
       onSuccess()
     } catch (error) {
+      setIsLoading(false)
       if (isServiceError(error)) {
         if (error.response?.status === 400) {
           setError('Please check to see if there is any invalid input fields.')
@@ -77,7 +80,9 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
           value={username}
           onInputChange={(text) => setUsername(text)}
         />
-        <Button type='submit'>Update</Button>
+        <Button type='submit' disabled={isLoading} isLoading={isLoading}>
+          Update
+        </Button>
       </form>
     </S.Container>
   )
