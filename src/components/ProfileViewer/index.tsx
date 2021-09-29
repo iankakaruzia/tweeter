@@ -6,6 +6,8 @@ import Modal from 'components/Modal'
 import UpdatePasswordModal from 'components/UpdatePasswordModal'
 import useModal from 'hooks/use-modal'
 import { meRequest, ProfileInfo } from 'services/user'
+import { formatDateToString } from 'utils/format/date'
+import { parseStringToPhone } from 'utils/format/phone'
 import * as S from './styles'
 
 const ProfileViewer = () => {
@@ -54,7 +56,11 @@ const ProfileViewer = () => {
               </S.Section>
               <S.Section>
                 <S.Label>Birthday</S.Label>
-                <S.Text>{data.birthday ?? '-'}</S.Text>
+                <S.Text>{formatDateToString(data.birthday) ?? '-'}</S.Text>
+              </S.Section>
+              <S.Section>
+                <S.Label>Phone</S.Label>
+                <S.Text>{parseStringToPhone(data.phone) ?? '-'}</S.Text>
               </S.Section>
               <S.Section>
                 <S.Label>Email</S.Label>

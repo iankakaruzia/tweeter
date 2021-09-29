@@ -1,16 +1,17 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ErrorOutline, Link } from '@styled-icons/material-rounded'
+import { Link } from '@styled-icons/material-rounded'
 import { AccordionItemHeading } from 'react-accessible-accordion'
 
 import Button from 'components/Button'
 import TextField from 'components/TextField'
 import Dropzone from 'components/Dropzone'
+import ErrorMessage from 'components/ErrorMessage'
 
 import { api, isServiceError } from 'services/api'
-import * as S from './styles'
 import { useFile } from 'hooks/use-file'
 import { useAuth } from 'hooks/use-auth'
+import * as S from './styles'
 
 type UpdateProfilePhotoModalProps = {
   onSuccess: () => void
@@ -65,11 +66,7 @@ const UpdateProfilePhotoModal = ({
 
   return (
     <S.Container>
-      {!!error && (
-        <S.ErrorMessage>
-          <ErrorOutline /> {error}
-        </S.ErrorMessage>
-      )}
+      {!!error && <ErrorMessage error={error} />}
       <form onSubmit={handleSubmit}>
         <S.StyledAccordion allowZeroExpanded>
           <S.StyledAccordionItem>

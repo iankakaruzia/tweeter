@@ -1,14 +1,15 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ErrorOutline, Person } from '@styled-icons/material-rounded'
+import { Person } from '@styled-icons/material-rounded'
 
 import Button from 'components/Button'
 import TextField from 'components/TextField'
+import ErrorMessage from 'components/ErrorMessage'
 
-import * as S from './styles'
 import { FieldErrors, updateUsernameValidate } from 'utils/validations'
 import { api, isServiceError } from 'services/api'
 import { useAuth } from 'hooks/use-auth'
+import * as S from './styles'
 
 type UpdateUsernameModalProps = {
   onSuccess: () => void
@@ -65,11 +66,7 @@ const UpdateUsernameModal = ({ onSuccess }: UpdateUsernameModalProps) => {
 
   return (
     <S.Container>
-      {!!error && (
-        <S.ErrorMessage>
-          <ErrorOutline /> {error}
-        </S.ErrorMessage>
-      )}
+      {!!error && <ErrorMessage error={error} />}
       <form onSubmit={handleSubmit}>
         <TextField
           icon={<Person />}

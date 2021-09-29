@@ -1,5 +1,7 @@
 import {
+  useCallback,
   useState,
+  FormEvent,
   InputHTMLAttributes,
   TextareaHTMLAttributes,
   HTMLInputTypeAttribute
@@ -7,12 +9,15 @@ import {
 import { Visibility, VisibilityOff } from '@styled-icons/material-rounded'
 
 import * as S from './styles'
+import { date, phone } from './masks'
 
 export type TextInputVariant = 'primary' | 'secondary'
 
 export type TextInputTypes =
   | InputHTMLAttributes<HTMLInputElement>
   | TextareaHTMLAttributes<HTMLTextAreaElement>
+
+type Mask = 'date' | 'phone'
 
 export type TextFieldProps = {
   onInputChange?: (value: string) => void
@@ -25,6 +30,7 @@ export type TextFieldProps = {
   as?: React.ElementType
   fullWidth?: boolean
   type?: HTMLInputTypeAttribute | undefined
+  mask?: Mask
 } & TextInputTypes
 
 const TextInput = ({
@@ -38,11 +44,24 @@ const TextInput = ({
   variant = 'primary',
   fullWidth = false,
   type = 'text',
+  mask,
   ...props
 }: TextFieldProps) => {
   const [value, setValue] = useState(initialValue)
   const [showPassword, setShowPassword] = useState(false)
   const isPassword = type === 'password'
+  const handleKeyUp = useCallback(
+    (e: FormEvent<HTMLInputElement>) => {
+      if (mask === 'date') {
+        date(e)
+      }
+
+      if (mask === 'phone') {
+        phone(e)
+      }
+    },
+    [mask]
+  )
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.currentTarget.value
@@ -75,6 +94,7 @@ const TextInput = ({
           variant={variant}
           hasIcon={!!icon}
           type={getInputType()}
+          onKeyUp={handleKeyUp}
           {...(label ? { id: name } : {})}
           {...props}
         />

@@ -1,15 +1,22 @@
+import { FormEvent, useState } from 'react'
 import { useQuery } from 'react-query'
 import Image from 'next/image'
+import { toast } from 'react-toastify'
+
 import Button from 'components/Button'
 import TextField from 'components/TextField'
 import Modal from 'components/Modal'
 import UpdateUsernameModal from 'components/UpdateUsernameModal'
 import UpdateEmailModal from 'components/UpdateEmailModal'
+import UpdateProfilePhotoModal from 'components/UpdateProfilePhotoModal'
+import ErrorMessage from 'components/ErrorMessage'
 
 import useModal from 'hooks/use-modal'
 import { meRequest, ProfileInfo } from 'services/user'
+import { api } from 'services/api'
+import { formatDateToString, formatStringToDate } from 'utils/format/date'
+import { formatPhone, parseStringToPhone } from 'utils/format/phone'
 import * as S from './styles'
-import UpdateProfilePhotoModal from 'components/UpdateProfilePhotoModal'
 
 const ProfileEditor = () => {
   const { data, refetch } = useQuery<ProfileInfo>(
@@ -20,6 +27,13 @@ const ProfileEditor = () => {
       cacheTime: Infinity
     }
   )
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [name, setName] = useState(data?.name ?? '')
+  const [bio, setBio] = useState(data?.bio ?? '')
+  const [phone, setPhone] = useState(parseStringToPhone(data?.phone) ?? '')
+  const [birthday, setBirthday] = useState(formatDateToString(data?.birthday))
+
   const { isVisible: isVisibleUsername, toggleModal: toggleUsernameModal } =
     useModal()
   const { isVisible: isVisibleEmail, toggleModal: toggleEmailModal } =
@@ -42,6 +56,34 @@ const ProfileEditor = () => {
   const onProfilePhotoUpdateSuccess = async () => {
     await refetch()
     toggleProfilePhotoModal()
+  }
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault()
+    setError('')
+    setIsLoading(true)
+    if (!name && !bio && !birthday && !phone) {
+      setError('Please provide at least one of the values')
+      setIsLoading(false)
+      return
+    }
+    try {
+      await api.patch(
+        'users',
+        {
+          name,
+          bio,
+          birthday: formatStringToDate(birthday),
+          phone: formatPhone(phone)
+        },
+        { withCredentials: true }
+      )
+      toast.success('Profile updated!')
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      setError('Something went wrong! Please try again later.')
+    }
   }
 
   return (
@@ -87,13 +129,15 @@ const ProfileEditor = () => {
                 </S.UpdateButton>
               </S.Section>
 
-              <form>
+              <form onSubmit={handleSubmit}>
+                {!!error && <ErrorMessage error={error} />}
                 <S.Section>
                   <TextField
                     fullWidth
                     label='Name'
                     placeholder='Enter your name...'
-                    initialValue={data.name ?? ''}
+                    value={name}
+                    onInputChange={(text) => setName(text)}
                   />
                 </S.Section>
 
@@ -104,7 +148,8 @@ const ProfileEditor = () => {
                     label='Bio'
                     placeholder='Enter your bio...'
                     rows={3}
-                    initialValue={data.bio ?? ''}
+                    value={bio}
+                    onInputChange={(text) => setBio(text)}
                   />
                 </S.Section>
 
@@ -112,8 +157,10 @@ const ProfileEditor = () => {
                   <TextField
                     fullWidth
                     label='Phone'
-                    placeholder='(XX) X XXXX-XXXX'
-                    initialValue={data.phone ?? ''}
+                    placeholder='(XX) XXXXX-XXXX'
+                    mask='phone'
+                    value={phone}
+                    onInputChange={(text) => setPhone(text)}
                   />
                 </S.Section>
 
@@ -122,11 +169,19 @@ const ProfileEditor = () => {
                     fullWidth
                     label='Birthday'
                     placeholder='DD/MM/YYYY'
-                    initialValue={data.birthday ?? ''}
+                    mask='date'
+                    value={birthday}
+                    onInputChange={(text) => setBirthday(text)}
                   />
                 </S.Section>
 
-                <Button>Save</Button>
+                <Button
+                  type='submit'
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                >
+                  Save
+                </Button>
               </form>
             </>
           ) : (

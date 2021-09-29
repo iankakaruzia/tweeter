@@ -1,14 +1,15 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ErrorOutline, Email } from '@styled-icons/material-rounded'
+import { Email } from '@styled-icons/material-rounded'
 
 import Button from 'components/Button'
 import TextField from 'components/TextField'
+import ErrorMessage from 'components/ErrorMessage'
 
-import * as S from './styles'
 import { FieldErrors, updateEmailValidate } from 'utils/validations'
 import { api, isServiceError } from 'services/api'
 import { useAuth } from 'hooks/use-auth'
+import * as S from './styles'
 
 type UpdateEmailModalProps = {
   onSuccess: () => void
@@ -65,11 +66,7 @@ const UpdateEmailModal = ({ onSuccess }: UpdateEmailModalProps) => {
 
   return (
     <S.Container>
-      {!!error && (
-        <S.ErrorMessage>
-          <ErrorOutline /> {error}
-        </S.ErrorMessage>
-      )}
+      {!!error && <ErrorMessage error={error} />}
       <form onSubmit={handleSubmit}>
         <TextField
           icon={<Email />}

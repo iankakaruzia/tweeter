@@ -1,9 +1,10 @@
 import { FormEvent, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ErrorOutline, Https } from '@styled-icons/material-rounded'
+import { Https } from '@styled-icons/material-rounded'
 
 import Button from 'components/Button'
 import TextField from 'components/TextField'
+import ErrorMessage from 'components/ErrorMessage'
 
 import { api, isServiceError } from 'services/api'
 import { FieldErrors, updateCurrentPasswordValidate } from 'utils/validations'
@@ -65,11 +66,7 @@ const UpdatePasswordModal = ({ onSuccess }: UpdatePasswordModalProps) => {
 
   return (
     <S.Container>
-      {!!error && (
-        <S.ErrorMessage>
-          <ErrorOutline /> {error}
-        </S.ErrorMessage>
-      )}
+      {!!error && <ErrorMessage error={error} />}
       <form onSubmit={handleSubmit}>
         <TextField
           error={fieldError?.currentPassword}

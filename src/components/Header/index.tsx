@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import {
@@ -20,10 +20,17 @@ import { useAuth } from 'hooks/use-auth'
 
 const Header = () => {
   const { logout, user } = useAuth()
+  const [isActive, setIsActive] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const [isActive, setIsActive] = useDetectOutsideClick(dropdownRef, false)
 
-  const onClick = () => setIsActive(!isActive)
+  const handleClickOutside = () => {
+    setIsActive(false)
+  }
+  useDetectOutsideClick(dropdownRef, handleClickOutside)
+
+  const handleButtonClick = () => {
+    setIsActive(!isActive)
+  }
 
   return (
     <S.Header>
@@ -46,47 +53,43 @@ const Header = () => {
       </S.TopNavigation>
 
       {user ? (
-        <S.DropdownButton onClick={onClick}>
-          <S.ImageWrapper>
-            <Image
-              src={user.profilePhoto ?? '/img/default-avatar.jpg'}
-              alt={`Profile of ${user.username}`}
-              width='32'
-              height='32'
-            />
-          </S.ImageWrapper>
-          <S.Username>{user.username}</S.Username>
-          {isActive ? (
-            <ArrowDropUp aria-label='Close Menu' size={25} />
-          ) : (
-            <ArrowDropDown size={25} aria-label='Open Menu' />
-          )}
-        </S.DropdownButton>
+        <div ref={dropdownRef}>
+          <S.DropdownButton onClick={handleButtonClick}>
+            <S.ImageWrapper>
+              <Image
+                src={user.profilePhoto ?? '/img/default-avatar.jpg'}
+                alt={`Profile of ${user.username}`}
+                width='32'
+                height='32'
+              />
+            </S.ImageWrapper>
+            <S.Username>{user.username}</S.Username>
+            {isActive ? (
+              <ArrowDropUp aria-label='Close Menu' size={25} />
+            ) : (
+              <ArrowDropDown size={25} aria-label='Open Menu' />
+            )}
+          </S.DropdownButton>
+          <S.Dropdown role='menu' aria-hidden={!isActive} isActive={isActive}>
+            <Link href='/profile' passHref>
+              <S.DropdownOption>
+                <AccountCircle size={16} /> My Profile
+              </S.DropdownOption>
+            </Link>
+            <Link href='/home' passHref>
+              <S.DropdownOption>
+                <People size={16} /> Group Chat
+              </S.DropdownOption>
+            </Link>
+            <S.DropdownSeparator />
+            <S.DropdownLogoutOption as='button' onClick={logout}>
+              <ExitToApp color='#EB5757' size={16} /> Logout
+            </S.DropdownLogoutOption>
+          </S.Dropdown>
+        </div>
       ) : (
         <div />
       )}
-
-      <S.Dropdown
-        role='menu'
-        aria-hidden={!isActive}
-        ref={dropdownRef}
-        isActive={isActive}
-      >
-        <Link href='/profile' passHref>
-          <S.DropdownOption>
-            <AccountCircle size={16} /> My Profile
-          </S.DropdownOption>
-        </Link>
-        <Link href='/home' passHref>
-          <S.DropdownOption>
-            <People size={16} /> Group Chat
-          </S.DropdownOption>
-        </Link>
-        <S.DropdownSeparator />
-        <S.DropdownLogoutOption as='button' onClick={logout}>
-          <ExitToApp color='#EB5757' size={16} /> Logout
-        </S.DropdownLogoutOption>
-      </S.Dropdown>
 
       <S.BottomNavigation>
         <S.BottomNavigationButton>

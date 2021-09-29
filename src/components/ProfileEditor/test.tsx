@@ -15,9 +15,7 @@ describe('<ProfileEditor />', () => {
       expect(
         screen.getByPlaceholderText('Enter your bio...')
       ).toBeInTheDocument()
-      expect(
-        screen.getByPlaceholderText('(XX) X XXXX-XXXX')
-      ).toBeInTheDocument()
+      expect(screen.getByPlaceholderText('(XX) XXXXX-XXXX')).toBeInTheDocument()
       expect(screen.getByPlaceholderText('DD/MM/YYYY')).toBeInTheDocument()
     })
   })
