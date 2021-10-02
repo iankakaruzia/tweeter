@@ -15,6 +15,12 @@ describe('<Button />', () => {
     })
   })
 
+  it('should not render children when button is loading', () => {
+    render(<Button isLoading>Click me</Button>)
+
+    expect(screen.queryByText(/click me/i)).not.toBeInTheDocument()
+  })
+
   it('should render a gray Button', () => {
     render(
       <Button color='gray' outlined>
