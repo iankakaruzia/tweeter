@@ -10,21 +10,25 @@ const ConfirmAccountForm = () => {
   const { query } = useRouter()
   const token = query.token
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const [sucessMessage, setSucessMessage] = useState('')
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
+    setIsLoading(true)
     try {
       const { data } = await api.post(`confirm-account/${token}`)
       setSucessMessage(data.message)
+      setIsLoading(false)
     } catch (error) {
+      setIsLoading(false)
       if (isServiceError(error)) {
         if (error.response?.status === 400 || error.response?.status === 404) {
           setError(error.response.data.message)
+          return
         }
-      } else {
-        setError('Something went wrong! Please try again later.')
       }
+      setError('Something went wrong! Please try again later.')
     }
   }
 
@@ -44,7 +48,9 @@ const ConfirmAccountForm = () => {
         </FormSuccess>
       ) : (
         <form onSubmit={handleSubmit}>
-          <Button type='submit'>Confirm Account</Button>
+          <Button isLoading={isLoading} disabled={isLoading} type='submit'>
+            Confirm Account
+          </Button>
         </form>
       )}
     </FormWrapper>

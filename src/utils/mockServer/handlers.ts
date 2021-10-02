@@ -65,5 +65,42 @@ export const handlers = [
         message: 'Logged out'
       })
     )
-  })
+  }),
+  rest.post(
+    'http://localhost:8080/confirm-account/valid-token',
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          message: 'Account Successfully Activated!'
+        })
+      )
+    }
+  ),
+  rest.post(
+    'http://localhost:8080/confirm-account/bad-token',
+    (req, res, ctx) => {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          error: 'NotFound',
+          message: 'Invalid confirmation token!',
+          statusCode: 404
+        })
+      )
+    }
+  ),
+  rest.post(
+    'http://localhost:8080/confirm-account/server-error-token',
+    (req, res, ctx) => {
+      return res(
+        ctx.status(500),
+        ctx.json({
+          error: 'ServerError',
+          message: 'Any Error',
+          statusCode: 404
+        })
+      )
+    }
+  )
 ]
