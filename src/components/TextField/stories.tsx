@@ -16,7 +16,7 @@ export default {
   },
   argTypes: {
     onInput: { action: 'changed' },
-    icon: { type: '' },
+    icon: { type: 'string' },
     variant: {
       control: {
         type: 'select',

@@ -6,7 +6,7 @@ export default {
   title: 'Header',
   component: Header,
   argTypes: {
-    user: { type: '' }
+    user: { type: 'string' }
   },
   parameters: {
     layout: 'fullscreen'

@@ -7,7 +7,7 @@ export default {
   component: ProfileViewer,
   argTypes: {
     photoUrl: {
-      type: ''
+      type: 'string'
     }
   },
   parameters: {
